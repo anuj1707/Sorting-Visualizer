@@ -52,18 +52,18 @@ export function getHeapSortAnimations(arr) {
   function heapSort(arr, N,animations)
   {
       // Build max heap
-      for (let i = N / 2 - 1; i >= 0; i--) heapify(arr, N, i,animations);
+      for (var i =Math.floor( N / 2) - 1; i >= 0; i--) heapify(arr, N, i,animations);
   
       // Heap sort
-      for (let j = N - 1; j >= 0; j--) {
-      animations.push([j,arr[0],'swap']);
-      animations.push([0,arr[j],'swap']);
+      for (var i = N - 1; i >= 0; i--) {
+      animations.push([i,arr[0],'swap']);
+      animations.push([0,arr[i],'swap']);
           var temp = arr[0];
-      arr[0] = arr[j];
-      arr[j] = temp;
+      arr[0] = arr[i];
+      arr[i] = temp;
           // Heapify root element to get highest element at
           // root again
-          heapify(arr, j, 0,animations);
+          heapify(arr, i, 0,animations);
       }
   }
   

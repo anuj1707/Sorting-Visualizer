@@ -27,17 +27,26 @@ export default class SortingVisualizer extends React.Component {
 
     this.state = {
       array: [],
+      value : 0,
+      
     };
+   
   }
-
+  
   componentDidMount() {
     this.resetArray();
   }
   arrSize() {
     let sz = document.getElementById('arrSize');
-    if((sz.value) === 0) this.resetArray();
-    else {NUMBER_OF_ARRAY_BARS = sz.value;
-    this.resetArray();} 
+    if(sz.value.trim().length === 0 || sz.value == 0) {
+      NUMBER_OF_ARRAY_BARS = 50;
+      
+    }
+    else{
+    NUMBER_OF_ARRAY_BARS = sz.value;
+    this.resetArray(); 
+    }
+    this.state.value = true;
   }
   resetArray() {
     const array = [];
@@ -46,12 +55,12 @@ export default class SortingVisualizer extends React.Component {
     }
     this.setState({array});
   }
-  
  
-  
   mergeSort() {
+    //document.getElementById('b2').disabled = 'true';
+
     const animations = getMergeSortAnimations(this.state.array);
-    
+
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const isColorChange = i % 3 !== 2;
@@ -72,6 +81,11 @@ export default class SortingVisualizer extends React.Component {
         }, i * ANIMATION_SPEED_MS);
       }
     }
+    console.log(document.getElementById('b2').disabled);
+    
+    document.getElementById('b2').disabled = false;
+    console.log(document.getElementById('b2').disabled);
+    
   }
 
   quickSort() {
@@ -248,7 +262,6 @@ selectionSort(){
 }
 
 
-
   // NOTE: This method will only work if your sorting algorithms actually return
   // the sorted arrays; if they return the animations (as they currently do), then
   // this method will be broken.
@@ -268,32 +281,31 @@ selectionSort(){
 
 
 
-
-
   render() {
     const {array} = this.state;
     
     return (
       <div className="array-container">
-        <div class = 'header'>
-        <button class='bt' onClick={() => this.resetArray()}>Generate New Array</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div className = 'header'>
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={() => this.resetArray()}>Generate New Array</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <span
-          class = "bt1"
+          className = "bt1"
           id="arraySize">
           Change Array Size 
         </span>
-        <input class='bt2' maxlength = '2'type = 'text' placeholder='(1-99)' id='arrSize'>
-        </input>&nbsp; <button class='bt' id = 'arrSize'onClick={() => this.arrSize()}>Set!</button>  &nbsp;&nbsp;&nbsp;&nbsp;
-        <button id='b1'class='bt' onClick={() => this.mergeSort()}>Merge Sort</button>  &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.quickSort()}>Quick Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.heapSort()}>Heap Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.linearSort()}>Linear Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.bubbleSort()}>Bubble Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.insertionSort()}>Insertion Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='bt' onClick={() => this.selectionSort()}>Selection Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input className  ='bt2' onChange={this.onChange} maxLength = '2'type = 'text' placeholder='(1-99)' id='arrSize'>
+        </input>&nbsp; <button className='bt'  onClick = {() => this.arrSize()} id = 'arrSize'>Set!</button>  &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={ () => this.mergeSort()}>Merge Sort</button>  &nbsp;&nbsp;&nbsp;&nbsp;
+        <button id = 'b2' disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={() => this.quickSort()}>Quick Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'}  onClick={() => this.heapSort()}>Heap Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className = {this.state.value ? 'bt' : 'btt'} onClick={() => this.linearSort()}>Linear Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={() => this.bubbleSort()}>Bubble Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={() => this.insertionSort()}>Insertion Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        <button disabled = {!this.state.value} className= {this.state.value ? 'bt' : 'btt'} onClick={() => this.selectionSort()}>Selection Sort</button> &nbsp;&nbsp;&nbsp;&nbsp;
+        
         </div>
         <br></br>
-        {array.map((value, idx) => (
+       {array.map((value, idx) => (
           <div
             className="array-bar"
             key={idx}
@@ -301,13 +313,10 @@ selectionSort(){
               backgroundColor: PRIMARY_COLOR,
               height: `${value}px`,
             }}></div>
+           
         ))}
-        
-      
-        
-        
+ 
        </div>
-      
     );
   }
 }
